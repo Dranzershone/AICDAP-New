@@ -1,0 +1,44 @@
+# environments
+.venv/
+venv/
+env/
+
+# python
+__pycache__/
+*.pyc
+
+# logs
+*.log
+
+# datasets
+data/
+datasets/
+*.csv
+
+# models
+model/
+models/
+*.pkl
+*.pt
+
+# frontend
+node_modules/
+dist/
+build/
+
+# vscode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# temp folders
+tmpclaude-*
+
+# environments
+.venv/
+venv/
+
+# mac zip junk
+__MACOSX/
