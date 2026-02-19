@@ -1,0 +1,237 @@
+/* ============================================
+   FLASHCARD 3D FLIP ANIMATION
+   ============================================ */
+
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+.flashcard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #f38020 0%, #ff9d47 100%);
+  color: white;
+  z-index: 2;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #0051c3 0%, #3b82f6 100%);
+  color: white;
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* Dark mode versions */
+[data-theme="dark"] .flashcard-front {
+  background: linear-gradient(135deg, #f38020 0%, #ff9d47 100%);
+  color: white;
+}
+
+[data-theme="dark"] .flashcard-back {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+}
+
+.flashcard-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.flashcard-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+
+.flashcard-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.flashcard-hint {
+  margin-top: auto;
+  font-size: 0.875rem;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* Modal Styles */
+.flashcard-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.flashcard-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.flashcard-modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.flashcard-modal-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flashcard-modal-card {
+  min-height: 350px;
+  margin: 1rem 0;
+}
+
+.flashcard-progress {
+  text-align: center;
+  font-size: 0.875rem;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.flashcard-progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.flashcard-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f38020 0%, #ff9d47 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease-out;
+}
+
+/* Category Filter Styles */
+.flashcard-category-filter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.flashcard-category-chip {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.flashcard-category-chip.active {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .flashcard-front,
+  .flashcard-back {
+    padding: 1.5rem;
+    min-height: 250px;
+  }
+
+  .flashcard-text {
+    font-size: 1rem;
+  }
+
+  .flashcard-modal-controls {
+    flex-direction: column;
+  }
+
+  .flashcard-container {
+    min-height: 250px;
+  }
+}
+
+/* Animations */
+@keyframes flipIn {
+  from {
+    opacity: 0;
+    transform: rotateY(-180deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) scale(1);
+  }
+}
+
+.flashcard.flip-animated {
+  animation: flipIn 0.6s ease-out;
+}
+
+/* Accessibility - Respect Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .flashcard {
+    transition: none;
+  }
+
+  .flashcard.flipped {
+    transform: none;
+    backface-visibility: hidden;
+  }
+
+  .flashcard-back {
+    transform: none;
+  }
+
+  /* For reduced motion, use opacity toggle instead of flip */
+  .flashcard-front,
+  .flashcard-back {
+    opacity: 1;
+  }
+
+  .flashcard.flipped .flashcard-front {
+    opacity: 0;
+    z-index: 0;
+  }
+
+  .flashcard.flipped .flashcard-back {
+    opacity: 1;
+    z-index: 1;
+    transform: none;
+  }
+}
