@@ -8,8 +8,9 @@ from typing import Any, Dict, List, Optional
 import sys
 import os
 
-# Add backend directory to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, BASE_DIR)
+sys.path.insert(0, os.path.abspath(os.path.join(BASE_DIR)))
 
 from dotenv import load_dotenv
 import nltk
@@ -29,7 +30,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from models.schemas import (
+from backend.models.schemas import(
     BulkURLAnalysisRequest,
     BulkURLAnalysisResponse,
     CampaignCreate,
