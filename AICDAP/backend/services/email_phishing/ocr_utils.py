@@ -18,38 +18,34 @@ class OCRTextExtractor:
         # Try to configure tesseract path for different operating systems
         self._configure_tesseract()
 
+
     def _configure_tesseract(self):
-        """Configure tesseract executable path."""
-        # Common tesseract paths for different systems
-        possible_paths = [
-            r"C:\Program Files\Tesseract-OCR\tesseract.exe",  # Windows
-            r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",  # Windows 32-bit
-            "/usr/bin/tesseract",  # Linux
-            "/usr/local/bin/tesseract",  # macOS with Homebrew
-            "/opt/homebrew/bin/tesseract",  # macOS Apple Silicon
-        ]
+        env_path = os.getenv("TESSERACT_PATH")
+        if env_path and os.path.exists(env_path):
+            pytesseract.pytesseract.tesseract_cmd = env_path
+            logger.info(f"Tesseract configured from ENV: {env_path}")
+            return
 
-        # Try to find tesseract executable
-        for path in possible_paths:
-            if os.path.exists(path):
-                pytesseract.pytesseract.tesseract_cmd = path
-                logger.info(f"Tesseract configured at: {path}")
-                return
+    # 2. Default Linux path (Render)
+        linux_path = "/usr/bin/tesseract"
+        if os.path.exists(linux_path):
+            pytesseract.pytesseract.tesseract_cmd = linux_path
+            logger.info(f"Tesseract configured at: {linux_path}")
+            return
+        
+        windows_path = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        if os.path.exists(windows_path):
+            pytesseract.pytesseract.tesseract_cmd = windows_path
+            logger.info(f"Tesseract configured at: {windows_path}")
+            return
 
-        # Check if tesseract is in PATH
+    # 4. Final fallback: PATH
         try:
             import subprocess
-
             subprocess.run(["tesseract", "--version"], capture_output=True, check=True)
             logger.info("Tesseract found in PATH")
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            logger.warning("Tesseract not found. OCR functionality may not work.")
-            logger.warning("Please install Tesseract OCR:")
-            logger.warning(
-                "- Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki"
-            )
-            logger.warning("- macOS: brew install tesseract")
-            logger.warning("- Ubuntu/Debian: sudo apt-get install tesseract-ocr")
+        except:
+            logger.warning("Tesseract not found. OCR may fail.")
 
     def preprocess_image(self, image_path: str) -> Tuple[np.ndarray, str]:
         """

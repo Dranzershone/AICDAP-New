@@ -52,7 +52,8 @@ class EmailPhishingDetector:
             "authority": [
                 "bank","security team","it department","administrator","manager",
                 "support team","customer service","official","government","irs",
-                "fbi","police","court","legal","law enforcement",
+                "fbi","pol"
+                "ice","court","legal","law enforcement",
             ],
             "reward": [
                 "won","prize","bonus","reward","gift","free","congratulations",

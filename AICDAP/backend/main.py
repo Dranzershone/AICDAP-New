@@ -6,6 +6,18 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
+import nltk
+
+def setup_nltk():
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
+
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
 from fastapi import BackgroundTasks, Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -38,6 +50,8 @@ from services.phishing_detector import PhishingDetector
 from services.supabase_client import SupabaseClient
 from services.template_service import TemplateService
 
+
+
 # Load environment variables
 load_dotenv()
 
@@ -55,7 +69,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("FRONTEND_URL", "http://localhost:3000")],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -74,10 +88,15 @@ templates = Jinja2Templates(directory="templates")
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
+
+    # ✅ Setup NLTK (ADD THIS)
+    setup_nltk()
+
     await supabase_client.initialize()
     await email_service.initialize()
     await phishing_detector.initialize()
     await initialize_email_detector()
+
     logger.info("All services initialized successfully")
     logger.info("AICDAP Backend started successfully")
 
