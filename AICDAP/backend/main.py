@@ -694,10 +694,4 @@ async def get_email_phishing_status():
 
 if __name__ == "__main__":
     import uvicorn
-
-    uvicorn.run(
-        "main:app",
-        host=os.getenv("APP_HOST", "localhost"),
-        port=int(os.getenv("APP_PORT", 8000)),
-        reload=os.getenv("DEBUG", "False").lower() == "true",
-    )
+    uvicorn.run("main:app", host="0.0.0.0", port=10000)
