@@ -30,7 +30,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from backend.models.schemas import(
+from models.schemas import(
     BulkURLAnalysisRequest,
     BulkURLAnalysisResponse,
     CampaignCreate,
