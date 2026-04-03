@@ -5,6 +5,12 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+import sys
+import os
+
+# Add backend directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from dotenv import load_dotenv
 import nltk
 
@@ -49,7 +55,6 @@ from services.insider_threat.graph_analyzer import run_insider_threat_analysis
 from services.phishing_detector import PhishingDetector
 from services.supabase_client import SupabaseClient
 from services.template_service import TemplateService
-
 
 
 # Load environment variables
