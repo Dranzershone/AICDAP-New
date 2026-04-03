@@ -94,8 +94,14 @@ async def startup_event():
 
     await supabase_client.initialize()
     await email_service.initialize()
-    await phishing_detector.initialize()
-    await initialize_email_detector()
+    try:
+        await phishing_detector.initialize()
+    except Exception as e:
+        print(f"Phishing detector failed: {e}")
+        try:
+            await initialize_email_detector()
+        except Exception as e:
+            print(f"Email detector failed: {e}")
 
     logger.info("All services initialized successfully")
     logger.info("AICDAP Backend started successfully")
